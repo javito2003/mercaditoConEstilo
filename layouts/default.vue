@@ -1,21 +1,23 @@
 <template>
-<div>
-    <Sidebar/>
+  <div>
+    <Sidebar v-if="estarActivo" />
     <Nuxt />
-</div>
+  </div>
 </template>
+
+<script>
+import { mapGetters } from "vuex";
+export default {
+  computed: {
+    ...mapGetters(["estarActivo"])
+  }
+};
+</script>
 
 <style>
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -25,9 +27,9 @@ html {
   height: 100%;
   box-sizing: border-box;
 }
-  body{
-    height: 100%;
-  }
+body {
+  height: 100%;
+}
 *,
 *::before,
 *::after {
@@ -63,5 +65,4 @@ html {
   color: #fff;
   background-color: #35495e;
 }
-
 </style>

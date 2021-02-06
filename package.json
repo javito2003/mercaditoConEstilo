@@ -4,19 +4,35 @@
   "private": true,
   "scripts": {
     "dev": "nuxt",
+    "devn": "nodemon api/index.js --exec babel-node",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
     "test": "jest"
   },
   "dependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/node": "^7.12.10",
+    "@babel/preset-env": "^7.12.11",
     "@nuxtjs/axios": "^5.12.5",
+    "bcrypt": "^5.0.0",
     "bootstrap": "^4.6.0",
     "bootstrap-css-only": "^4.4.1",
     "bootstrap-vue": "^2.21.2",
+    "colors": "^1.4.0",
     "core-js": "^3.8.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "fs": "0.0.1-security",
+    "jsonwebtoken": "^8.5.1",
     "mdbvue": "^6.7.2",
-    "nuxt": "^2.14.12"
+    "mongoose": "^5.11.14",
+    "mongoose-unique-validator": "^2.0.3",
+    "morgan": "^1.10.0",
+    "nuxt": "^2.14.12",
+    "sweetalert": "^2.1.2"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.1.2",
