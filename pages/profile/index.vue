@@ -8,12 +8,6 @@
       <br />
       <br />
       <hr />
-      <b-button
-        class="btn-dark"
-        to="/createProduct"
-        v-if="this.user.rol === 'ADMIN'"
-        >Create a product</b-button
-      >
     </div>
   </div>
 </template>

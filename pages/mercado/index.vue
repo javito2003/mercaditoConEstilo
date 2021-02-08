@@ -35,8 +35,14 @@ export default {
   },
   methods: {
     listarProductos() {
+      let config = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
+      console.log(config);
       this.$axios
-        .post("/products")
+        .post("/products", null, config)
         .then(res => {
           this.products = res.data.products;
           console.log(this.products);

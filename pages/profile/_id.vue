@@ -6,7 +6,7 @@
           <div
             class="d-flex flex-column align-items-center text-center p-3 py-5"
           >
-            <img :src="user.image" width="200" height="200" /><span
+            <img :src="user.url" width="200" height="200" /><span
               class="font-weight-bold"
               >{{ user.name }}</span
             ><span> </span>
@@ -63,33 +63,27 @@
 </template>
 
 <script>
+import swal from "sweetalert";
 export default {
   middleware: "authenticated",
   data() {
     return {
       editText: "Editar",
       id: this.$route.params.id,
-      user: this.$store.state.auth.userData,
+      user: {},
       userEdit: {},
       editar: true
     };
   },
   created() {
     this.capturarUser();
-    this.edicionUser(this.id);
   },
   methods: {
     capturarUser() {
-      const localUser = JSON.parse(localStorage.getItem("auth"));
-      this.user = localUser.userData;
-    },
-    edicionUser(id) {
-      this.editar = true;
       this.$axios
-        .post(`/data/${id}`)
+        .post(`/data/${this.id}`)
         .then(res => {
-          console.log(res);
-          this.userEdit = res.data.userData;
+          this.user = res.data.userData;
         })
         .catch(err => {
           console.log(err.response);
@@ -103,7 +97,24 @@ export default {
           this.user.name = this.userEdit.name;
           this.user.surname = this.userEdit.surname;
           this.user.password = this.userEdit.password;
-          console.log(res);
+
+          //Update store
+          const auth = {
+            token: this.$store.state.auth.token,
+            userData: this.user
+          };
+          this.$store.commit("setAuth", auth);
+
+          localStorage.setItem("auth", JSON.stringify(auth));
+
+          swal({
+            title: "Good job!",
+            text: "Your profile has edited!",
+            icon: "success",
+            button: "Aww yiss!",
+            timer: 4000
+          });
+          window.location.href = "/profile";
         })
         .catch(err => {
           console.log(err.response);

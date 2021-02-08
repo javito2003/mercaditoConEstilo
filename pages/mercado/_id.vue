@@ -2,7 +2,7 @@
   <div>
     <div class="container text-center">
       <h1 class="title text-center mt-3">{{ product.name }}</h1>
-      <img src="" alt="" width="200px" height="200px" />
+      <img :src="product.image" alt="" width="200px" height="200px" />
       <p class="my-2">{{ product.description }}</p>
       <h5>
         <strong>${{ product.price }}</strong>
@@ -15,6 +15,7 @@
 
 <script>
 export default {
+  middleware: "authenticated",
   data() {
     return {
       id: this.$route.params.id,
@@ -26,9 +27,15 @@ export default {
   },
   methods: {
     getProduct() {
+      let config = {
+        headers: {
+          token: this.$store.state.auth.token
+        }
+      };
       this.$axios
-        .post(`/product/${this.id}`)
+        .post(`/product/${this.id}`, null, config)
         .then(res => {
+          console.log(res.data.product);
           this.product = res.data.product;
         })
         .catch(err => {

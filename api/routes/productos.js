@@ -3,11 +3,11 @@ const router = express.Router()
 const fs = require('fs')
 
 
-import {checkAuth} from '../middlewares/authenticacion'
+import {checkAuth,checkAdm} from '../middlewares/authenticacion'
 import Producto from '../models/producto'
 
 //New product
-router.post('/new-product', async (req, res) => {
+router.post('/new-product',[checkAuth,checkAdm], async (req, res) => {
     var imageRoute = ""
     imageRoute = 'static/'
 
@@ -62,7 +62,7 @@ router.post('/new-product', async (req, res) => {
     }
 })
 
-router.post('/products', async (req, res) => {
+router.post('/products',checkAuth, async (req, res) => {
     try {
         const productDB = await Producto.find()
         const toSend = {
@@ -81,7 +81,7 @@ router.post('/products', async (req, res) => {
     }
 })
 
-router.post('/product/:id', async (req, res) => {
+router.post('/product/:id',checkAuth, async (req, res) => {
     const _id = req.params.id
     try {
         const productDB = await Producto.findOne({ _id })
@@ -103,24 +103,45 @@ router.post('/product/:id', async (req, res) => {
 
 
 
-router.post('/delete-product/:id', async (req, res) => {
-    const id = req.params.id
+router.post('/delete-product/:id',[checkAuth,checkAdm], async (req, res) => {
+    const _id = req.params.id
 
     try {
 
-        const productDB = await Producto.findByIdAndDelete({ id })
+        const productDB = await Producto.findByIdAndDelete({ _id })
         if (!productDB) {
             return res.status(400).json({
                 message: "Product not exist",
             })
         }
-        return res.json(productDB)
+        return res.json({
+            status: 'Success',
+            data: productDB
+        })
 
         
     } catch (error) {
         return res.status(400).json({
             message: 'Error to delete product',
             error:error
+        })
+    }
+})
+
+router.post('/edit-product/:id', [checkAuth, checkAdm], async (req, res) => {
+    const _id = req.params.id
+    const body = req.body
+    try {
+        const productDB = await Producto.findByIdAndUpdate(_id, body, { new: true, runValidators: true })
+        
+        res.json({
+            message: 'Success',
+            productDB
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: 'Ocurred an error',
+            error: error
         })
     }
 })

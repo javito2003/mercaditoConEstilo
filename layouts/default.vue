@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Sidebar v-if="estarActivo" />
+    <Navbar v-if="estarActivo" />
     <Nuxt />
   </div>
 </template>

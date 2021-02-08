@@ -4,6 +4,13 @@
       <div class="container">
         <div class="row no-gutters">
           <div class="col-lg-7 px-5 pt-5">
+            <span
+              ><strong
+                ><a href="/profile" style="color:black">BACK</a></strong
+              ></span
+            >
+            <hr />
+
             <h1>Create a product</h1>
             <h4>Sign a new product</h4>
             <form @submit.prevent="createProduct()">
@@ -50,6 +57,10 @@
                     Create Producto
                   </button>
                 </div>
+                <p>
+                  You want edit or delete products?
+                  <a href="/productPanel">Clcik here</a>
+                </p>
               </div>
             </form>
           </div>
@@ -61,7 +72,7 @@
 
 <script>
 export default {
-  middleware: "authAdm",
+  middleware: ["authAdm", "authenticated"],
   data() {
     return {
       product: {
@@ -85,10 +96,12 @@ export default {
       data.append("description", this.product.description);
 
       let config = {
-        header: {
-          "Content-Type": "multipart/form-data"
+        headers: {
+          "Content-Type": "multipart/form-data",
+          token: `${this.$store.state.auth.token}`
         }
       };
+      console.log(config);
       this.$axios
         .post("/new-product", data, config)
         .then(res => {
